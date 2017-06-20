@@ -1,5 +1,7 @@
 int sensorPin = 0;
 int ledPin = 11;
+int ledLevel = 0;
+int inputValue;
 
 void setup() {
   analogReference(DEFAULT);
@@ -8,14 +10,11 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(analogRead(sensorPin));
+  inputValue = analogRead(sensorPin);
+  inputValue = constrain(inputValue , 100 ,850);
+  ledLevel = map(inputValue,100,800,255,0);
+  Serial.println(ledLevel);
   delay(500);
-  if(analogRead(sensorPin) < 500)
-  {
-    digitalWrite(ledPin,HIGH);
-  }
-  else
-  {
-    digitalWrite(ledPin,LOW);
-  }
+  if(inputValue > 800) ledLevel = 0;
+  analogWrite(ledPin,ledLevel);
 }
